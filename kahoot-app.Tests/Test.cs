@@ -166,4 +166,26 @@ public class QuestionsTests
         Assert.True(isEventTriggered); // Ensure that the QuizReset event is triggered when the game is reset
     }
 
+    // REQ#1.1.0
+    [Fact]
+    public void Player_Score_Increase_Works()
+    {
+        // Arrange
+        var quizName = "Test Quiz";
+        string playerName = "Bish";
+        var quiz = new Quiz(quizName);
+        quiz.PlayersCanJoin = true;
+        var playerId = quiz.Join(playerName);
+        var currentPlayer =  quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId);
+
+
+        var startScore = currentPlayer?.Score.Value;
+        currentPlayer?.Score.ChangeScore(10);
+        var secondScore = currentPlayer?.Score.Value;
+
+        // Users can Interact and set their name in the game
+        Assert.Equal(startScore, 0);
+        Assert.Equal(secondScore, 10);
+    }
+
 }

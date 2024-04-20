@@ -18,8 +18,10 @@ public class Quiz
     }
     private int currentQuestionNumber = 0;
 
-    public int CurrentQuestionNumber{
-        get{
+    public int CurrentQuestionNumber
+    {
+        get
+        {
             return currentQuestionNumber;
         }
     }
@@ -54,7 +56,9 @@ public class Quiz
                 QuizStateChanged?.Invoke();
                 return player.PlayerId; // Return the ID of the newly added player
             }
-        } else{
+        }
+        else
+        {
             throw new QuizClosedException("Sorry! This quiz is already closed");
         }
     }
@@ -62,12 +66,15 @@ public class Quiz
     {
         PlayersCanJoin = false;
         currentQuestionNumber++;
+        QuizStateChanged?.Invoke();
     }
-    public void EndQuiz(){
+    public void EndQuiz()
+    {
         IsQuizOver = true;
         QuizReset?.Invoke();
     }
-    public void IncrementCurrentQuestionNumber(){
+    public void IncrementCurrentQuestionNumber()
+    {
         currentQuestionNumber++;
     }
     public event Action? QuizStateChanged;
