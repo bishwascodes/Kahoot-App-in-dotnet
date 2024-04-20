@@ -178,14 +178,46 @@ public class QuestionsTests
         var playerId = quiz.Join(playerName);
         var currentPlayer =  quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId);
 
-
         var startScore = currentPlayer?.Score.Value;
         currentPlayer?.Score.ChangeScore(10);
         var secondScore = currentPlayer?.Score.Value;
 
-        // Users can Interact and set their name in the game
         Assert.Equal(startScore, 0);
         Assert.Equal(secondScore, 10);
+    }
+
+    // REQ#1.1.0
+    [Fact]
+    public void Player_Ranking_System_Works()
+    {
+        // Arrange
+        var quizName = "Test Quiz";
+        string playerName1 = "Bish";
+        string playerName2 = "John";
+        string playerName3 = "Nike";
+        var quiz = new Quiz(quizName);
+        quiz.PlayersCanJoin = true;
+        var playerId1 = quiz.Join(playerName1);
+        var playerId2 = quiz.Join(playerName2);
+        var playerId3 = quiz.Join(playerName3);
+        var Player1 =  quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId1);
+        var Player2 =  quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId2);
+        var Player3 =  quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId3);
+
+
+    
+        Player1?.Score.ChangeScore(10);
+        Player1?.Score.ChangeScore(15);
+        Player1?.Score.ChangeScore(5);
+        var PlayerRank1 = Player1?.Score.Rank;
+        var PlayerRank2 = Player2?.Score.Rank;
+        var PlayerRank3 = Player3?.Score.Rank;
+
+        // Checking their rank
+        Assert.Equal(PlayerRank1, 2);
+        Assert.Equal(PlayerRank1, 1);
+        Assert.Equal(PlayerRank1, 3);
+    
     }
 
 }
