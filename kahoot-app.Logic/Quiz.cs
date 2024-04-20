@@ -61,6 +61,7 @@ public class Quiz
     public void Start()
     {
         PlayersCanJoin = false;
+        currentQuestionNumber++;
     }
 
     public event Action? QuizStateChanged;
