@@ -77,7 +77,7 @@ public class Quiz
     {
         currentQuestionNumber++;
     }
-    public List<(string playerName, int rank)> GetPlayerRanks()
+    public List<(string playerName, int rank, int score)> GetPlayerRanks()
     {
         // Sort players by score value in descending order
         var sortedPlayers = Players
@@ -87,11 +87,12 @@ public class Quiz
 
         // Assign ranks to players based on their position in the sorted list
         var rankedPlayers = sortedPlayers
-            .Select((player, index) => (player!.Name, Rank: index + 1)) // Assign rank based on position in the sorted list
+            .Select((player, index) => (player!.Name, Rank: index + 1, Score: player.Score!.Value)) // Assign rank based on position in the sorted list
             .ToList();
 
         return rankedPlayers;
     }
+
 
     public event Action? QuizStateChanged;
     public event Action? QuizReset;
