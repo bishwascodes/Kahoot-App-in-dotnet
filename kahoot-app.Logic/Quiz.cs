@@ -2,21 +2,29 @@ using System.Runtime.Serialization;
 
 namespace kahoot_app.Logic;
 
-public class Quiz{
-   
-   
+public class Quiz
+{
+
+
     public Quiz(string quizName)
     {
-        if(quizName == null) throw new ArgumentNullException();
-        QuizName = quizName;
+        if (quizName == null)
+        {
+            throw new ArgumentNullException("You can't have an Quiz with Empty Name");
+        }
+        else
+        {
+            QuizName = quizName;
+        }
     }
-    public string QuizName { get;}
-    public List<Player?> Players= new();
-    public Admin? Admin{get;set;}
+    public string QuizName { get; }
+    public List<Player?> Players = new();
+    public Admin? Admin { get; set; }
     public Questions? Questions;
 
     // REQ#4.1.2
-    public void getQuestions(){
+    public void getQuestions()
+    {
         Questions = new Questions("../kahoot-app.Persistence/quiz_1.json");
     }
 
