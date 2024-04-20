@@ -58,4 +58,19 @@ public class QuestionsTests
         // Users can Interact and set their name in the game
         Assert.Equal(playerName, quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId).Name);
     }
+
+    // REQ#1.1.0
+    //REQ#1.2.2
+     [Fact]
+    public void User_Cannot_Interact_With_Game_Without_Valid_Data_Inputs()
+    {
+        // Arrange
+        var quizName = "Test Quiz";
+        string playerName = null;
+        var quiz = new Quiz(quizName);
+
+        // Users cannot pass the null value to set their name 
+        
+        Assert.ThrowsAny<Exception>(() => quiz.Join(playerName));
+    }
 }
