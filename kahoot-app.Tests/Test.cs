@@ -144,4 +144,26 @@ public class QuestionsTests
         Assert.True(isEventTriggered); // Ensure that the QuizReset event is triggered when the game is reset
     }
 
+    // REQ#1.1.0
+    [Fact]
+    public void Quiz_State_Changed_Event_Is_Triggered_When_Game_Is_Started()
+    {
+        // Arrange
+        var quizName = "Test Quiz";
+        var quiz = new Quiz(quizName);
+        var isEventTriggered = false;
+
+        // Subscribe to the QuizReset event and set IsQuizOver to true
+        quiz.QuizStateChanged += () => isEventTriggered = true;
+        
+        
+
+        // Act
+        // ending the game
+        quiz.Start();
+
+        // Assert
+        Assert.True(isEventTriggered); // Ensure that the QuizReset event is triggered when the game is reset
+    }
+
 }
