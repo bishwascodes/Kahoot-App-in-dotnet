@@ -27,8 +27,10 @@ public class Quiz
         Questions = new Questions("../kahoot-app.Persistence/quiz_1.json");
     }
 
+    // REQ#1.2.3
     public int Join(string newPlayerName)
     {
+       
         if (newPlayerName == null)
         {
             throw new ArgumentNullException("You can't use null name");
@@ -45,6 +47,7 @@ public class Quiz
     public List<(int id, int score)> LeaderBoard = new();
     public bool IsQuizOver = false;
     public bool PlayersCanJoin = false;
+
     public event Action? QuizStateChanged;
     public event Action? QuizReset;
 }
