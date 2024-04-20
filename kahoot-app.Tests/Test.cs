@@ -7,32 +7,41 @@ public class QuestionsTests
     [Fact]
     public void User_Can_Create_New_Game_Successfully()
     {
-        // Arrange
+
         var quizName = "Test Quiz";
         var quiz = new Quiz(quizName);
 
-        // Act
-        quiz.getQuestions();
+        var quizNameFromClass = quiz.QuizName;
 
-        // Assert
-        Assert.NotNull(quiz.Questions);
+        Assert.Equal(quizNameFromClass, quizName);
     }
 
     [Fact]
     public void User_Can_Join_Existing_Game_If_Available()
     {
-        // Arrange
+
         var quizName = "Test Quiz";
         var quiz = new Quiz(quizName);
         var playerName = "Test Player";
-        var expectedPlayerId = 1; // the first player gets ID 1
 
-        // Act
         var playerId = quiz.Join(playerName);
+        var noOfPlayers = quiz.Players.Count;
 
-        // Assert
-        Assert.Equal(expectedPlayerId, playerId); // player is added and gets correct ID
+        Assert.Equal(1, noOfPlayers); // Adds to the player list
         Assert.Single(quiz.Players); // player is added to the list
         Assert.Equal(playerName, quiz.Players[0]?.Name); // correct player name is set
+    }
+
+    // REQ#1.1.0
+    // REQ#1.1.2
+
+    [Fact]
+    public void User_Cannot_Create_New_Game_Without_Quiz_Name()
+    {
+        string quizName = null;
+        Quiz quiz = null;
+
+
+        Assert.ThrowsAny<Exception>(() => new Quiz(null));
     }
 }

@@ -7,6 +7,7 @@ public class Quiz{
    
     public Quiz(string quizName)
     {
+        if(quizName == null) throw new ArgumentNullException();
         QuizName = quizName;
     }
     public string QuizName { get;}
@@ -14,6 +15,7 @@ public class Quiz{
     public Admin? Admin{get;set;}
     public Questions? Questions;
 
+    // REQ#4.1.2
     public void getQuestions(){
         Questions = new Questions("../kahoot-app.Persistence/quiz_1.json");
     }
