@@ -17,6 +17,12 @@ public class Quiz
         }
     }
     private int currentQuestionNumber = 0;
+
+    public int CurrentQuestionNumber{
+        get{
+            return currentQuestionNumber;
+        }
+    }
     public List<(int id, int score)> LeaderBoard = new();
     public bool IsQuizOver = false;
     public bool PlayersCanJoin;

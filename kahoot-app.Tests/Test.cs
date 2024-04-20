@@ -61,7 +61,7 @@ public class QuestionsTests
 
     // REQ#1.1.0
     //REQ#1.2.2
-     [Fact]
+    [Fact]
     public void User_Cannot_Interact_With_Game_Without_Valid_Data_Inputs()
     {
         // Arrange
@@ -70,12 +70,12 @@ public class QuestionsTests
         var quiz = new Quiz(quizName);
 
         // Users cannot pass the null value to set their name 
-        
+
         Assert.ThrowsAny<Exception>(() => quiz.Join(playerName));
     }
 
     // REQ#1.1.0
-     [Fact]
+    [Fact]
     public void User_Cannot_Join_After_Start_The_Quiz()
     {
         // Arrange
@@ -85,7 +85,22 @@ public class QuestionsTests
         quiz.Start();
 
         // Once the admin starts the test, user can't join
-        
-       Assert.Equal(quiz.PlayersCanJoin, false);
+
+        Assert.Equal(quiz.PlayersCanJoin, false);
+    }
+
+    // REQ#1.1.0
+    [Fact]
+    public void Current_Question_Number_Is_Set_To_1_On_Start()
+    {
+        // Arrange
+        var quizName = "Test Quiz";
+        var quiz = new Quiz(quizName);
+
+        quiz.Start();
+
+        // Once the admin starts the test, the current question number becomes 1
+
+        Assert.Equal(quiz.CurrentQuestionNumber, 1);
     }
 }
