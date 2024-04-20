@@ -29,10 +29,17 @@ public class Quiz
 
     public int Join(string newPlayerName)
     {
-        Player player = new Player(newPlayerName);
-        Players.Add(player);
-        QuizStateChanged?.Invoke();
-        return player.PlayerId; // Return the ID of the newly added player
+        if (newPlayerName == null)
+        {
+            throw new ArgumentNullException("You can't use null name");
+        }
+        else
+        {
+            Player player = new Player(newPlayerName);
+            Players.Add(player);
+            QuizStateChanged?.Invoke();
+            return player.PlayerId; // Return the ID of the newly added player
+        }
     }
     private int currentQuestionIndex = 0;
     public List<(int id, int score)> LeaderBoard = new();
