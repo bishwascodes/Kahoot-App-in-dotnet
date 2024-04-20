@@ -44,4 +44,18 @@ public class QuestionsTests
 
         Assert.ThrowsAny<Exception>(() => new Quiz(null));
     }
+
+    // REQ#1.2.1
+    [Fact]
+    public void User_Can_Interact_With_Game_Successfully()
+    {
+        // Arrange
+        var quizName = "Test Quiz";
+        var playerName = "Test Player";
+        var quiz = new Quiz(quizName);
+        var playerId = quiz.Join(playerName);
+
+        // Users can Interact and set their name in the game
+        Assert.Equal(playerName, quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId).Name);
+    }
 }

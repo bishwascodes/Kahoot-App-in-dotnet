@@ -2,10 +2,9 @@ using System.Runtime.Serialization;
 
 namespace kahoot_app.Logic;
 
+// REQ#1.1.3
 public class Quiz
 {
-
-
     public Quiz(string quizName)
     {
         if (quizName == null)
