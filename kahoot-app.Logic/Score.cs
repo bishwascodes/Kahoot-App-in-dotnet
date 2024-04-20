@@ -12,5 +12,6 @@ public class Score
     public int Value { get; set; }
     public DateTime Timestamp { get; set; }
     public void ChangeScore(int value){
+        Value = Value + value;
     }
 }
