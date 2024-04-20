@@ -64,7 +64,7 @@ public class Quiz
         currentQuestionNumber++;
     }
     public void IncrementCurrentQuestionNumber(){
-
+        currentQuestionNumber++;
     }
     public event Action? QuizStateChanged;
     public event Action? QuizReset;
