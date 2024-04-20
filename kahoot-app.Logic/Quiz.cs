@@ -16,6 +16,11 @@ public class Quiz
             QuizName = quizName;
         }
     }
+    private int currentQuestionNumber = 0;
+    public List<(int id, int score)> LeaderBoard = new();
+    public bool IsQuizOver = false;
+    public bool PlayersCanJoin;
+
     public string QuizName { get; }
     public List<Player?> Players = new();
     public Admin? Admin { get; set; }
@@ -30,23 +35,27 @@ public class Quiz
     // REQ#1.2.3
     public int Join(string newPlayerName)
     {
-       
-        if (newPlayerName == null)
+        if (PlayersCanJoin)
         {
-            throw new ArgumentNullException("You can't use null name");
-        }
-        else
-        {
-            Player player = new Player(newPlayerName);
-            Players.Add(player);
-            QuizStateChanged?.Invoke();
-            return player.PlayerId; // Return the ID of the newly added player
+            if (newPlayerName == null)
+            {
+                throw new ArgumentNullException("You can't use null name");
+            }
+            else
+            {
+                Player player = new Player(newPlayerName);
+                Players.Add(player);
+                QuizStateChanged?.Invoke();
+                return player.PlayerId; // Return the ID of the newly added player
+            }
+        } else{
+            throw new QuizClosedException("Sorry! This quiz is already closed");
         }
     }
-    private int currentQuestionIndex = 0;
-    public List<(int id, int score)> LeaderBoard = new();
-    public bool IsQuizOver = false;
-    public bool PlayersCanJoin = false;
+    public void Start()
+    {
+        PlayersCanJoin = false;
+    }
 
     public event Action? QuizStateChanged;
     public event Action? QuizReset;

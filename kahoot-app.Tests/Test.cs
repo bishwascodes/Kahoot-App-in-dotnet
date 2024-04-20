@@ -76,15 +76,15 @@ public class QuestionsTests
 
     // REQ#1.1.0
      [Fact]
-    public void Admin_Can_Start_The_Quiz()
+    public void User_Cannot_Join_After_Start_The_Quiz()
     {
         // Arrange
         var quizName = "Test Quiz";
         var quiz = new Quiz(quizName);
-        quiz.getQuestions();
+
         quiz.Start();
 
-        // Users cannot pass the null value to set their name 
+        // Once the admin starts the test, user can't join
         
        Assert.Equal(quiz.PlayersCanJoin, false);
     }
