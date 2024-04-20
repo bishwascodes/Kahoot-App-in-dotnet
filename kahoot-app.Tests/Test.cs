@@ -133,8 +133,8 @@ public class QuestionsTests
 
         // Subscribe to the QuizReset event and set IsQuizOver to true
         quiz.QuizReset += () => isEventTriggered = true;
-        
-        
+
+
 
         // Act
         // ending the game
@@ -155,8 +155,8 @@ public class QuestionsTests
 
         // Subscribe to the QuizReset event and set IsQuizOver to true
         quiz.QuizStateChanged += () => isEventTriggered = true;
-        
-        
+
+
 
         // Act
         // ending the game
@@ -176,7 +176,7 @@ public class QuestionsTests
         var quiz = new Quiz(quizName);
         quiz.PlayersCanJoin = true;
         var playerId = quiz.Join(playerName);
-        var currentPlayer =  quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId);
+        var currentPlayer = quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId);
 
         var startScore = currentPlayer?.Score.Value;
         currentPlayer?.Score.ChangeScore(10);
@@ -200,24 +200,25 @@ public class QuestionsTests
         var playerId1 = quiz.Join(playerName1);
         var playerId2 = quiz.Join(playerName2);
         var playerId3 = quiz.Join(playerName3);
-        var Player1 =  quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId1);
-        var Player2 =  quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId2);
-        var Player3 =  quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId3);
+        var Player1 = quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId1);
+        var Player2 = quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId2);
+        var Player3 = quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId3);
 
-
-    
         Player1?.Score.ChangeScore(10);
         Player1?.Score.ChangeScore(15);
         Player1?.Score.ChangeScore(5);
-        var PlayerRank1 = Player1?.Score.Rank;
-        var PlayerRank2 = Player2?.Score.Rank;
-        var PlayerRank3 = Player3?.Score.Rank;
 
-        // Checking their rank
-        Assert.Equal(PlayerRank1, 2);
-        Assert.Equal(PlayerRank1, 1);
-        Assert.Equal(PlayerRank1, 3);
-    
+        // Act
+        var rankList = quiz.GetPlayerRanks();
+
+        // Assert
+        var PlayerRank1 = rankList.FirstOrDefault(rank => rank.playerName == playerName1).rank;
+        var PlayerRank2 = rankList.FirstOrDefault(rank => rank.playerName == playerName2).rank;
+        var PlayerRank3 = rankList.FirstOrDefault(rank => rank.playerName == playerName3).rank;
+
+        Assert.Equal(2, PlayerRank1); // Player 1's rank is 2
+        Assert.Equal(1, PlayerRank2); // Player 2's rank is 1
+        Assert.Equal(3, PlayerRank3); // Player 3's rank is 3
     }
 
 }

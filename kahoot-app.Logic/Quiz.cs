@@ -77,6 +77,8 @@ public class Quiz
     {
         currentQuestionNumber++;
     }
+   
+
     public event Action? QuizStateChanged;
     public event Action? QuizReset;
 }
