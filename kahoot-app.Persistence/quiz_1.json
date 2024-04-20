@@ -1,0 +1,93 @@
+[
+    {
+      "question": "What is the capital of France?",
+      "options": [
+        { "optionId": 1, "isCorrect": false, "option": "Berlin" },
+        { "optionId": 2, "isCorrect": false, "option": "London" },
+        { "optionId": 3, "isCorrect": true, "option": "Paris" },
+        { "optionId": 4, "isCorrect": false, "option": "Rome" }
+      ]
+    },
+    {
+      "question": "Which planet is known as the Red Planet?",
+      "options": [
+        { "optionId": 1, "isCorrect": false, "option": "Venus" },
+        { "optionId": 2, "isCorrect": true, "option": "Mars" },
+        { "optionId": 3, "isCorrect": false, "option": "Jupiter" },
+        { "optionId": 4, "isCorrect": false, "option": "Saturn" }
+      ]
+    },
+    {
+      "question": "What is the chemical symbol for water?",
+      "options": [
+        { "optionId": 1, "isCorrect": false, "option": "H2O2" },
+        { "optionId": 2, "isCorrect": true, "option": "H2O" },
+        { "optionId": 3, "isCorrect": false, "option": "HO2" },
+        { "optionId": 4, "isCorrect": false, "option": "HO" }
+      ]
+    },
+    {
+      "question": "Who painted the Mona Lisa?",
+      "options": [
+        { "optionId": 1, "isCorrect": false, "option": "Michelangelo" },
+        { "optionId": 2, "isCorrect": true, "option": "Leonardo da Vinci" },
+        { "optionId": 3, "isCorrect": false, "option": "Vincent van Gogh" },
+        { "optionId": 4, "isCorrect": false, "option": "Pablo Picasso" }
+      ]
+    },
+    {
+      "question": "Which country is known as the Land of the Rising Sun?",
+      "options": [
+        { "optionId": 1, "isCorrect": true, "option": "Japan" },
+        { "optionId": 2, "isCorrect": false, "option": "China" },
+        { "optionId": 3, "isCorrect": false, "option": "Korea" },
+        { "optionId": 4, "isCorrect": false, "option": "Thailand" }
+      ]
+    },
+    {
+      "question": "Who wrote 'To Kill a Mockingbird'?",
+      "options": [
+        { "optionId": 1, "isCorrect": false, "option": "Abraham Lincon" },
+        { "optionId": 2, "isCorrect": true, "option": "Harper Lee" },
+        { "optionId": 3, "isCorrect": false, "option": "J.K. Rowling" },
+        { "optionId": 4, "isCorrect": false, "option": "Charles Dickens" }
+      ]
+    },
+    {
+      "question": "What is the tallest mountain in the world?",
+      "options": [
+        { "optionId": 1, "isCorrect": false, "option": "Mount Kilimanjaro" },
+        { "optionId": 2, "isCorrect": true, "option": "Mount Everest" },
+        { "optionId": 3, "isCorrect": false, "option": "Mount Fuji" },
+        { "optionId": 4, "isCorrect": false, "option": "Mount McKinley" }
+      ]
+    },
+    {
+      "question": "Who developed the theory of relativity?",
+      "options": [
+        { "optionId": 1, "isCorrect": false, "option": "Isaac Newton" },
+        { "optionId": 2, "isCorrect": true, "option": "Albert Einstein" },
+        { "optionId": 3, "isCorrect": false, "option": "Stephen Hawking" },
+        { "optionId": 4, "isCorrect": false, "option": "Galileo Galilei" }
+      ]
+    },
+    {
+      "question": "What is the largest mammal in the world?",
+      "options": [
+        { "optionId": 1, "isCorrect": false, "option": "African Elephant" },
+        { "optionId": 2, "isCorrect": false, "option": "Giraffe" },
+        { "optionId": 3, "isCorrect": true, "option": "Blue Whale" },
+        { "optionId": 4, "isCorrect": false, "option": "Hippopotamus" }
+      ]
+    },
+    {
+      "question": "Which element has the chemical symbol 'Au'?",
+      "options": [
+        { "optionId": 1, "isCorrect": false, "option": "Silver" },
+        { "optionId": 2, "isCorrect": false, "option": "Aluminum" },
+        { "optionId": 3, "isCorrect": true, "option": "Gold" },
+        { "optionId": 4, "isCorrect": false, "option": "Platinum" }
+      ]
+    }
+  ]
+  

@@ -1,0 +1,81 @@
+﻿@page "/"
+@inject NavigationManager navManager
+@inject ILogger<Home> logger
+@* 
+<Login /> *@
+
+<PageTitle>Kahoot</PageTitle>
+<h3>Welcome to your favourite Kahoot Quiz</h3>
+@if (openQuizzes.Any())
+    {
+        <h1>Join available Quizzes (@openQuizzes.Count)</h1>
+        @foreach (var item in openQuizzes)
+        {
+            <button @onclick=@(() => joinQuiz(item.Id)) class="btn btn-primary m-3">
+                Join @item.Quiz.QuizName
+            </button>
+            
+        }
+        <hr>
+    }
+@if (!showCreateQuizForm)
+{
+    <h1>Create Your Own Quiz</h1>
+    <button class="btn btn-primary m-3" @onclick="() => showCreateQuizForm = true">Create New Quiz</button>
+}
+else
+{
+    <h1>Create New Quiz</h1>
+    <form @onsubmit="CreateQuiz">
+        <div class="form-group">
+            <label for="adminName">Admin Name:</label>
+            <input type="text" class="form-control" id="adminName" @bind="adminName">
+        </div>
+        <div class="form-group">
+            <label for="quizName">Quiz Name:</label>
+            <input type="text" class="form-control" id="quizName" @bind="quizName">
+        </div>
+        <button type="submit" class="btn btn-primary m-3">Launch the Quiz</button>
+    </form>
+}
+
+@code {
+    
+    List<(int Id, Quiz Quiz)> openQuizzes;
+    bool showCreateQuizForm = false;
+    string adminName;
+    string quizName;
+
+    void joinQuiz(int QuizId)
+    {
+        logger.LogInformation("Joining Quiz {id}", QuizId);
+        navManager.NavigateTo($"/join?Quizid={QuizId}");
+    }
+
+    async Task CreateQuiz()
+    {
+        var newQuiz = new Quiz(quizName);
+        newQuiz.Admin = new Admin(adminName);
+        QuizHost.Instance.Quizzes.Add(newQuiz);
+        newQuiz.PlayersCanJoin = true;
+        QuizHost.Instance.RaiseHostStateChanged();
+        navManager.NavigateTo($"/quiz-dashboard?Quizid={QuizHost.Instance.Quizzes.Count}");
+        
+    }
+
+    void refresh()
+    {
+        openQuizzes = (from Quiz in QuizHost.Instance.Quizzes
+                     let index = QuizHost.Instance.Quizzes.IndexOf(Quiz)
+                     where Quiz.PlayersCanJoin is true
+                     select (index+1, Quiz)).ToList();
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        refresh();
+        StateHasChanged();
+        QuizHost.Instance.HostStateChanged += () => InvokeAsync(refresh);
+    }
+}

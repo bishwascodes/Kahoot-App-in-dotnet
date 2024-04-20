@@ -1,0 +1,97 @@
+@page "/quiz-play"
+
+@inject NavigationManager NavigationManager
+@inject ILogger<Quiz_Play> logger
+
+@if (me is null)
+{
+    <div class="bg-danger">There is no player with your Name!</div>
+}
+else if (!quiz.IsQuizOver)
+{
+    <h1> You're in the Lobby of the quiz "@quiz.QuizName"</h1>
+    <h3> @me.Name, are you excited? The quiz will start shortly.</h3>
+
+    <div class="row">
+        <div class="col-12 mt-5">
+            @if (others.Any())
+            {
+                <h5>Here is the list of other participants: </h5>
+                <ol>
+                     @foreach(var individual in others){
+                    <li>@individual.Name</li>
+                    }
+                </ol>
+               
+               
+            }
+        </div>
+    </div>
+
+}
+else
+{
+    <h3>Quiz Over</h3>
+    
+}
+
+@code {
+    
+    Quiz? quiz
+    {
+        get
+        {
+            if(QuizId is null)
+               return null;
+
+            try
+            {
+                return QuizHost.Instance.Quizzes[QuizId.Value-1];
+            }
+            catch
+            {
+                NavigationManager.NavigateTo("/");
+            }
+            return null;
+        }
+    }
+    Player? me;
+
+    List<Player?> playerList;
+    List<Player?> others;
+    List<string> errors = new();
+
+    [SupplyParameterFromQuery]
+    public int? QuizId{get;set;}
+
+    [SupplyParameterFromQuery]
+    public int PlayerId { get; set; }
+
+    protected override void OnParametersSet()
+    {
+       quiz.QuizStateChanged += () =>
+        {
+            InvokeAsync(() => {
+                logger.LogInformation("quiz state changed! for {player}", me.Name);
+                others = quiz.Players.Where(player => player?.PlayerId != PlayerId).ToList();
+                StateHasChanged();
+            });
+        };
+
+        quiz.QuizReset += () =>
+        {
+            NavigationManager.NavigateTo("/");
+        };
+        playerList = quiz.Players;
+        me = quiz.Players.FirstOrDefault(player => player?.PlayerId == PlayerId);
+
+        others = quiz.Players.Where(player => player?.PlayerId != PlayerId).ToList();
+
+        errors.Clear();
+    }
+    protected override void OnInitialized(){
+        
+    }
+
+   
+}

@@ -1,0 +1,48 @@
+@page "/quiz-dashboard"
+@inject NavigationManager NavigationManager
+
+<PageTitle>Quiz Dashboard</PageTitle>
+
+
+<h1>Hello @quiz.Admin.Name ! Your're Managing the quiz.</h1>
+<h2>Your Quiz is : <em> @quiz.QuizName (@quizQuestions.QuestionsList.Count) </em></h2>
+
+
+@code {
+
+    [SupplyParameterFromQuery]
+    public int? QuizId { get; set; }
+    bool adminAdded = false;
+
+    string adminName;
+    Questions? quizQuestions;
+    
+    Quiz? quiz
+    {
+        get
+        {
+            if (QuizId is null)
+                return null;
+
+            try
+            {
+                return QuizHost.Instance.Quizzes[QuizId.Value-1];
+            }
+            catch
+            {
+                NavigationManager.NavigateTo("/");
+            }
+            return null;
+        }
+
+    }
+    protected override void OnInitialized()
+    {
+        quiz.getQuestions();
+        quizQuestions = quiz.Questions;
+        quiz.QuizStateChanged += () => InvokeAsync(StateHasChanged);
+       
+
+    }
+   
+}

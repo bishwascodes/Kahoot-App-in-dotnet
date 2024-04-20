@@ -1,0 +1,63 @@
+@page "/join"
+@inject NavigationManager NavigationManager
+
+<PageTitle>Join</PageTitle>
+
+<h1>You're one step closer to play the quiz</h1>
+
+@if (quiz is null)
+{
+    <p>What? Are you missing the quizid query string parameter?</p>
+}
+else if (quiz.PlayersCanJoin)
+{
+    <form @onsubmit=joinQuiz>
+        <input @bind=newPlayerName placeholder="Your Name" />
+        <input type=submit value='Join Quiz' />
+    </form>
+}
+else
+{
+    <p>Sorry, looks like the entry for the participation in the quiz is already closed.</p>
+    
+}
+
+@code {
+
+    [SupplyParameterFromQuery]
+    public int? QuizId { get; set; }
+
+    string newPlayerName;
+
+    Quiz? quiz
+    {
+        get
+        {
+            if (QuizId is null)
+                return null;
+
+            try
+            {
+                return QuizHost.Instance.Quizzes[QuizId.Value-1];
+            }
+            catch
+            {
+                NavigationManager.NavigateTo("/");
+            }
+            return null;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        quiz.QuizStateChanged += () => InvokeAsync(StateHasChanged);
+        QuizHost.Instance.HostStateChanged += () => InvokeAsync(StateHasChanged);
+    }
+    
+    void joinQuiz()
+    {
+        int newPlayerid = quiz.Join(newPlayerName);
+        QuizHost.Instance.RaiseHostStateChanged();
+        NavigationManager.NavigateTo($"/quiz-play?PlayerId={newPlayerid}&quizid={QuizId}");
+    }
+}
