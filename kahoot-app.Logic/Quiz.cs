@@ -64,7 +64,8 @@ public class Quiz
         currentQuestionNumber++;
     }
     public void EndQuiz(){
-        
+        IsQuizOver = true;
+        QuizReset?.Invoke();
     }
     public void IncrementCurrentQuestionNumber(){
         currentQuestionNumber++;
