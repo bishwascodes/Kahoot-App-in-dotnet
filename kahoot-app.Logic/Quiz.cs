@@ -77,7 +77,21 @@ public class Quiz
     {
         currentQuestionNumber++;
     }
-   
+    public List<(string playerName, int rank)> GetPlayerRanks()
+    {
+        // Sort players by score value in descending order
+        var sortedPlayers = Players
+            .Where(player => player != null && player.Score != null) // Filter out null players or scores
+            .OrderByDescending(player => player!.Score!.Value) // Sort by score value
+            .ToList();
+
+        // Assign ranks to players based on their position in the sorted list
+        var rankedPlayers = sortedPlayers
+            .Select((player, index) => (player!.Name, Rank: index + 1)) // Assign rank based on position in the sorted list
+            .ToList();
+
+        return rankedPlayers;
+    }
 
     public event Action? QuizStateChanged;
     public event Action? QuizReset;

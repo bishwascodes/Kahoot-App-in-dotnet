@@ -200,13 +200,13 @@ public class QuestionsTests
         var playerId1 = quiz.Join(playerName1);
         var playerId2 = quiz.Join(playerName2);
         var playerId3 = quiz.Join(playerName3);
-        var Player1 = quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId1);
-        var Player2 = quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId2);
-        var Player3 = quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId3);
+        var Player1 = quiz.Players.FirstOrDefault(player => player.PlayerId == playerId1);
+        var Player2 = quiz.Players.FirstOrDefault(player => player.PlayerId == playerId2);
+        var Player3 = quiz.Players.FirstOrDefault(player => player.PlayerId == playerId3);
 
         Player1?.Score.ChangeScore(10);
-        Player1?.Score.ChangeScore(15);
-        Player1?.Score.ChangeScore(5);
+        Player2?.Score.ChangeScore(15);
+        Player3?.Score.ChangeScore(5);
 
         // Act
         var rankList = quiz.GetPlayerRanks();
