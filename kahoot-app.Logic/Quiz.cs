@@ -63,7 +63,9 @@ public class Quiz
         PlayersCanJoin = false;
         currentQuestionNumber++;
     }
+    public void IncrementCurrentQuestionNumber(){
 
+    }
     public event Action? QuizStateChanged;
     public event Action? QuizReset;
 }

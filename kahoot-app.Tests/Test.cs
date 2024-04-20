@@ -103,4 +103,22 @@ public class QuestionsTests
 
         Assert.Equal(quiz.CurrentQuestionNumber, 1);
     }
+    // REQ#1.1.0
+    [Fact]
+    public void Current_Question_Number_Can_be_increaded_by_1()
+    {
+        // Arrange
+        var quizName = "Test Quiz";
+        var quiz = new Quiz(quizName);
+
+        quiz.Start();
+        var after_start = quiz.CurrentQuestionNumber;
+
+        quiz.IncrementCurrentQuestionNumber();
+
+        // Once the admin starts the test, the current question number becomes 1 and we can increment the question number by 1
+
+        Assert.Equal(after_start, 1);
+        Assert.Equal(quiz.CurrentQuestionNumber, 2);
+    }
 }
