@@ -63,6 +63,9 @@ public class Quiz
         PlayersCanJoin = false;
         currentQuestionNumber++;
     }
+    public void EndQuiz(){
+        
+    }
     public void IncrementCurrentQuestionNumber(){
         currentQuestionNumber++;
     }

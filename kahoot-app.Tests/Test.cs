@@ -121,4 +121,27 @@ public class QuestionsTests
         Assert.Equal(after_start, 1);
         Assert.Equal(quiz.CurrentQuestionNumber, 2);
     }
+
+    // REQ#1.1.0
+    [Fact]
+    public void Quiz_Reset_Event_Is_Triggered_When_Game_Is_Over()
+    {
+        // Arrange
+        var quizName = "Test Quiz";
+        var quiz = new Quiz(quizName);
+        var isEventTriggered = false;
+
+        // Subscribe to the QuizReset event and set IsQuizOver to true
+        quiz.QuizReset += () => isEventTriggered = true;
+        
+        
+
+        // Act
+        // ending the game
+        quiz.EndQuiz();
+
+        // Assert
+        Assert.True(isEventTriggered); // Ensure that the QuizReset event is triggered when the game is reset
+    }
+
 }
