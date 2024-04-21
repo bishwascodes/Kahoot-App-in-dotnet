@@ -280,6 +280,37 @@ public class QuestionsTests
         Assert.Equal(expectedLeaderboard, Leaderboard.LeaderboardPlayers);
     }
 
-    
+    // REQ#1.1.0
+    [Fact]
+    public void GetQuestion_Returns_Correct_Question()
+    {
+        // Arrange
+        var questions = new Questions();
+        questions.QuestionsList = new List<(string, List<(int, bool, string)>)>
+        {
+            ("What is the capital of France?", new List<(int, bool, string)>
+                {
+                    (1, false, "Berlin"),
+                    (2, false, "Madrid"),
+                    (3, true, "Paris"),
+                    (4, false, "Rome")
+                }
+            ),
+            ("What is the largest mammal?", new List<(int, bool, string)>
+                {
+                    (1, false, "Lion"),
+                    (2, false, "Elephant"),
+                    (3, true, "Blue Whale"),
+                    (4, false, "Giraffe")
+                }
+            )
+        };
+
+        // Act
+        var question = questions.GetQuestion(1); // Getting the second question
+
+        // Assert
+        Assert.Equal("What is the largest mammal?", question);
+    }
 
 }
