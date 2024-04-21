@@ -44,8 +44,7 @@ public static class Leaderboard
             LeaderboardPlayers[i] = (i + 1, LeaderboardPlayers[i].Item2, LeaderboardPlayers[i].Item3);
         }
 
-        // Save the leaderboard to file
-        SaveLeaderboard();
+       
     }
     public static void UpdateLeaderboard(List<( int rank,string playerName, int score)> playerData)
     {
@@ -81,11 +80,10 @@ public static class Leaderboard
             LeaderboardPlayers[i] = (i + 1, LeaderboardPlayers[i].Item2, LeaderboardPlayers[i].Item3);
         }
 
-        // Save the leaderboard to file
-        SaveLeaderboard();
+       
     }
 
-    private static void SaveLeaderboard()
+    public static void SaveLeaderboard()
     {
         List<LeaderboardData> data = new();
         var temp = LeaderboardPlayers;

@@ -180,6 +180,7 @@ else if (!IsQuizOver)
             var rankList = quiz.GetPlayerRanks();
             //REQ#4.1.1
             Leaderboard.UpdateLeaderboard(rankList);
+            Leaderboard.SaveLeaderboard();
             myRank  = rankList.FirstOrDefault(rank => rank.playerName == me.Name).rank;
             //REQ#3.1.3
              StateHasChanged();

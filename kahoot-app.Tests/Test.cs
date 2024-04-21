@@ -223,8 +223,9 @@ public class QuestionsTests
     }
 
     // REQ#1.1.0
+    // REQ#1.8.1
     [Fact]
-    public void Leaderboard_Is_Upto_Date()
+    public void Leaderboard_Is_Upto_Date_And_Shows_top_10_scores()
     {
         // Arrange
 
@@ -279,7 +280,65 @@ public class QuestionsTests
 
         Assert.Equal(expectedLeaderboard, Leaderboard.LeaderboardPlayers);
     }
+    // REQ#1.8.2
+    
+    [Fact]
+    public void Leaderboard_Shows_Only_top_10_scores_if_more_added()
+    {
+        // Arrange
 
+        var playerData = new List<(string playerName, int rank, int score)>
+        {
+            ("Player1", 1, 100),
+            ("Player2", 2, 90),
+            ("Player3", 3, 80),
+            ("Player4", 4, 70),
+            ("Player5", 5, 60),
+            ("Player6", 6, 50),
+            ("Player7", 7, 40),
+            ("Player8", 8, 30),
+            ("Player9", 9, 20),
+            ("Player10", 10, 10)
+        };
+        // REQ#2.3.1
+        Leaderboard.UpdateLeaderboard(playerData);
+        var NewPlayerData = new List<(string playerName, int rank, int score)>
+        {
+            ("Player1", 1, 101),
+            ("Player2", 2, 90),
+            ("Player3", 3, 80),
+            ("Player4", 4, 70),
+            ("Player5", 5, 60),
+            ("Player6", 6, 50),
+            ("Player7", 7, 40),
+            ("Player8", 8, 30),
+            ("Player9", 9, 20),
+            ("Player10", 10, 20),
+            ("Player11", 11, 25)
+        };
+
+        // Act
+        //REQ#2.3.1
+
+        Leaderboard.UpdateLeaderboard(NewPlayerData);
+
+        // Assert
+        var expectedLeaderboard = new List<(int, string, int)>
+        {
+            (1, "Player1", 101),
+            (2, "Player2", 90),
+            (3, "Player3", 80),
+            (4, "Player4", 70),
+            (5, "Player5", 60),
+            (6, "Player6", 50),
+            (7, "Player7", 40),
+            (8, "Player8", 30),
+            (9, "Player11", 25),
+            (10, "Player9", 20)
+        };
+
+        Assert.Equal(expectedLeaderboard, Leaderboard.LeaderboardPlayers);
+    }
     // REQ#1.1.0
     [Fact]
     public void GetQuestion_Returns_Correct_Question()
@@ -455,6 +514,84 @@ public class QuestionsTests
 
         // Assert
         Assert.False(eventTriggered);
+    }
+
+    // REQ#1.5.1
+
+    [Fact]
+    public void CheckAnswer_Correct_Answer_Adds_Score()
+    {
+        // Arrange
+        var quizName = "Sample Quiz";
+        var quiz = new Quiz(quizName);
+        quiz.PlayersCanJoin = true;
+        var player = quiz.Join("John");
+        Player me = quiz.Players[0];
+        var question = new Questions();
+        question.QuestionsList.Add(("What is 2 + 2?", new List<(int, bool, string)>
+            {
+                (1, false, "3"),
+                (2, true, "4"),
+                (3, false, "5")
+            }));
+        quiz.Questions = question;
+
+        // Act
+        void CheckAnswer(int value)
+        {
+            bool isCorrect = question.GetCorrectAnswer(0) == value;
+            if (isCorrect)
+            {
+                me.Score.ChangeScore(150);
+            }
+           
+            Thread.Sleep(3000);
+            quiz.ChangeQuestion();
+        }
+        CheckAnswer(2);
+         // Selecting the correct answer
+
+        // Assert
+        Assert.Equal(150, me.Score.Value); // Score should be increased
+    }
+
+    // REQ#1.5.2
+
+    [Fact]
+    public void CheckAnswer_InCorrect_Answer_NoChange_Score()
+    {
+        // Arrange
+        var quizName = "Sample Quiz";
+        var quiz = new Quiz(quizName);
+        quiz.PlayersCanJoin = true;
+        var player = quiz.Join("John");
+        Player me = quiz.Players[0];
+        var question = new Questions();
+        question.QuestionsList.Add(("What is 2 + 2?", new List<(int, bool, string)>
+            {
+                (1, false, "3"),
+                (2, true, "4"),
+                (3, false, "5")
+            }));
+        quiz.Questions = question;
+
+        // Act
+        void CheckAnswer(int value)
+        {
+            bool isCorrect = question.GetCorrectAnswer(0) == value;
+            if (isCorrect)
+            {
+                me.Score.ChangeScore(150);
+            }
+           
+            Thread.Sleep(3000);
+            quiz.ChangeQuestion();
+        }
+        CheckAnswer(3);
+         // Selecting the incorrect answer
+
+        // Assert
+        Assert.Equal(0, me.Score.Value); // Score should be 0
     }
 
 }
