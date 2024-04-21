@@ -28,7 +28,34 @@ public class Questions
         }
     }
 
-   
+    public int GetCorrectAnswer(int questionId)
+    {
+        var question = QuestionsList[questionId];
+        var correctOption = question.options.FirstOrDefault(option => option.isCorrect);
+        if (correctOption != default)
+        {
+            return correctOption.optionId;
+        }
+        else
+        {
+            throw new NoCorrectAnswerException();
+        }
+    }
+
+    public string GetQuestion(int questionId)
+    {
+        return QuestionsList[questionId].question;
+    }
+
+    public List<(int, string)> GetOptions(int questionId)
+    {
+        List<(int, string)> options = new();
+        foreach (var optionItem in QuestionsList[questionId].options)
+        {
+            options.Add((optionItem.optionId, optionItem.option));
+        }
+        return options;
+    }
 }
 
 
