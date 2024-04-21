@@ -66,7 +66,7 @@ public class Quiz
     {
         PlayersCanJoin = false;
         currentQuestionNumber++;
-        QuizStateChanged?.Invoke();
+        QuizStarted?.Invoke();
     }
     public void EndQuiz()
     {
@@ -93,9 +93,10 @@ public class Quiz
         return rankedPlayers;
     }
 
-
+    //REQ#3.1.1
     public event Action? QuizStateChanged;
     public event Action? QuizReset;
+    public event Action? QuizStarted;
 }
 
 [Serializable]

@@ -3,39 +3,32 @@ using kahoot_app.Persistence;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace kahoot_app.Logic;
-public record Options(int optionId, bool isCorrect, string option);
-public record Question(string question, List<Options> options);
 public class Questions
 {
-    public List<Question> QuestionsList = new();
+    public List<(string question, List<(int optionId, bool isCorrect, string option)> options)> QuestionsList = new();
 
-    public Questions(){
+    public Questions()
+    {
         // Empty Questions
     }
+
     public Questions(string fileName)
     {
         var quizData = new QuizData();
         var rawData = quizData.getDataFromJson(fileName);
         foreach (var item in rawData)
         {
-            List<Options> _options = new();
+            List<(int optionId, bool isCorrect, string option)> _options = new();
             foreach (var option in item.options)
             {
-                _options.Add(new Options(
-                    option.optionId,
-                    option.isCorrect,
-                    option.option
-                ));
+                _options.Add((option.optionId, option.isCorrect, option.option));
             }
 
-            QuestionsList.Add(new Question(item.question, _options));
+            QuestionsList.Add((item.question, _options));
         }
-
     }
 
-
-    
-
+   
 }
 
 

@@ -1,5 +1,6 @@
 namespace kahoot_app.Persistence;
 
+//REQ#2.3.1
 public static class Leaderboard
 {
 

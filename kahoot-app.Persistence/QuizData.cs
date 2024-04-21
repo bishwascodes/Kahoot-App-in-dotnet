@@ -4,18 +4,17 @@ using System.Collections.Generic;
 using System.Text.Json;
 
 
-public record Options(int optionId, bool isCorrect, string option);
-public record Question(string question, List<Options> options);
 public class QuizData
 {
     public QuizData()
     {
         
     }
-    public List<Question> getDataFromJson(string fileName){
-
+    
+    public List<(string question, List<(int optionId, bool isCorrect, string option)> options)> getDataFromJson(string fileName)
+    {
         string jsonContent = File.ReadAllText(fileName);
-
-        return JsonSerializer.Deserialize<List<Question>>(jsonContent);
+        var questions = JsonSerializer.Deserialize<List<(string question, List<(int optionId, bool isCorrect, string option)> options)>>(jsonContent);
+        return questions;
     }
 }

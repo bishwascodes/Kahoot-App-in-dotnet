@@ -3,26 +3,40 @@
 
 <PageTitle>Quiz Dashboard</PageTitle>
 
-<h1>Welcome to Quiz Management Dashboard</h1>
-<div class="mt-5 p-2 mb-6">
-    <h3>Hello @quiz.Admin.Name ! Your're Managing the quiz.</h3>
-    <h4>Your Quiz is : <em> @quiz.QuizName </em></h4>
-</div>
+<div class="container">
+    <h1>Welcome to Quiz Management Dashboard</h1>
+    <div class="col-8">
+        <div class="mt-5 p-2 mb-6">
+            <h3>Hello @quiz.Admin.Name ! Your're Managing the quiz.</h3>
+            <h4>Your Quiz is : <em> @quiz.QuizName </em></h4>
+        </div>
 
-<div class="row mt-4 p-2">
-<h5> Current Participants: <em>(@playerList.Count)</em></h5>
-   @foreach (var player in playerList)
-{
-    <div class="col-3 text-center">
-         <div class="card p-4"> @player.Name </div>
+        <div class="row mt-4 p-2">
+        @* REQ#3.1.3 *@
+        <h5> Current Participants: <em>(@playerList.Count)</em></h5>
+        @foreach (var player in playerList)
+        {
+            <div class="col-3 text-center">
+                <div class="card p-4"> @player.Name </div>
+            </div>
+        } 
+        </div>
+        @if(!quizStartedDashboard){
+            <div class="d-flex justify-content-end">
+                <div style="margin-right: 100px;">
+                    <button class="btn btn-primary mt-4" @onclick="StartQuiz">Start Quiz Now</button>
+                </div>
+            
+            </div>
+        } else{
+            <b> </b>
+        }
     </div>
-} 
-</div>
-<div class="d-flex justify-content-end">
-    <div style="margin-right: 100px;">
-         <button class="btn btn-primary mt-4" @onclick="StartQuiz">Start Quiz Now</button>
+    <div class="col-4">
+
     </div>
-   
+
+
 </div>
 @code {
 
@@ -30,8 +44,12 @@
     public int? QuizId { get; set; }
     bool adminAdded = false;
 
+    bool quizStartedDashboard;
+
     string adminName;
     Questions? quizQuestions;
+
+    List<Questions> quizQuestionList;
     List<Player> playerList = new();
 
     Quiz? quiz
@@ -55,13 +73,15 @@
     }
 
     void StartQuiz(){
+
         quiz.Start();
+
     }
     protected override void OnInitialized()
     {
         quiz.getQuestions();
         quizQuestions = quiz.Questions;
-
+        quizQuestionList = quizQuestions.QuestionsList;
         quiz.QuizStateChanged += () => InvokeAsync(StateHasChanged);
 
 
@@ -72,7 +92,17 @@
         {
             InvokeAsync(() =>
             {
+                @* REQ#3.1.3 *@
                 playerList = quiz.Players;
+                StateHasChanged();
+            });
+        };
+        quiz.QuizStarted += () =>
+        {
+            InvokeAsync(() =>
+            {
+                @* REQ#3.1.3 *@
+                quizStartedDashboard = true;
                 StateHasChanged();
             });
         };
