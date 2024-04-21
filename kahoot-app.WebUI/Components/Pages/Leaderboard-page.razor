@@ -1,0 +1,12 @@
+@page "/leaderboard-page"
+
+@using kahoot_app.WebUI.Components.Layout
+
+<PageTitle>Leaderboard</PageTitle>
+
+<h1>Leaderboard</h1>
+
+<LeaderboardData LeaderboardPlayers="@leaderboardPlayersList" />
+@code{
+    List<(int, string, int)> leaderboardPlayersList = Leaderboard.LeaderboardPlayers;
+}

@@ -1,0 +1,25 @@
+<h4 class="text-center">Leaderboard</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var player in LeaderboardPlayers)
+        {
+            <tr>
+                <td>@player.Item1</td>
+                <td>@player.Item2</td>
+                <td>@player.Item3</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public List<(int, string, int)> LeaderboardPlayers { get; set; }
+}

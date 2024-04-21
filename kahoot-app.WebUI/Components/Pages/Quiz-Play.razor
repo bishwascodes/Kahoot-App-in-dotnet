@@ -2,52 +2,89 @@
 
 @inject NavigationManager NavigationManager
 @inject ILogger<Quiz_Play> logger
+@using kahoot_app.WebUI.Components.Layout
 
 @if (me is null)
 {
     <div class="bg-danger">There is no player with your Name!</div>
 }
-else if (!quiz.IsQuizOver)
+else if (!IsQuizOver)
 {
-    <h1> You're in the Lobby of the quiz "@quiz.QuizName"</h1>
-    <h3> @me.Name, are you excited? The quiz will start shortly.</h3>
+    if (!isQuizStarted)
+    {
 
-    <div class="row">
-        <div class="col-12 mt-5">
-            @* REQ#3.1.3 *@
-            @if (others.Any())
-            {
-                <h5>Here is the list of other participants: </h5>
-                <ol>
-                     @foreach(var individual in others){
-                    <li>@individual.Name</li>
-                    }
-                </ol>
-               
-               
-            }
+
+        <h1> You're in the Lobby of the quiz "@quiz.QuizName"</h1>
+        <h3> @me.Name, are you excited? The quiz will start shortly.</h3>
+
+        <div class="row">
+            <div class="col-12 mt-5">
+                @* REQ#3.1.3 *@
+                @if (others.Any())
+                {
+                    <h5>Here is the list of other participants: </h5>
+                    <ol>
+                        @foreach (var individual in others)
+                        {
+                            <li>@individual.Name</li>
+                        }
+                    </ol>
+
+                }
+            </div>
         </div>
-    </div>
+    }
+    else
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <div class="shadow p-5 border-rounded boxed">
+                        <h4 class="text-center"> @quizQuestions?.GetQuestion(currentQuestionNum) </h4>
+                        <div class="row">
+                            @foreach (var item in quizQuestions.GetOptions(currentQuestionNum))
+                            {
 
-}
-else
-{
+
+                                <div class="col-6">
+                                    <div class="inner">
+                                        <button class="btn btn-primary mt-4"
+                                            @onclick="@(() => CheckAnswer(item.Item1))">@item.Item2</button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <h4 class="text-center"> Result: @answerResult </h4>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <LeaderboardData LeaderboardPlayers="@playerRanks" />
+                </div>
+            </div>
+        </div>
+    }
+
+} else{
     <h3>Quiz Over</h3>
-    
+
+    <h1> Your Rank is @myRank out of @playerList.Count </h1>
 }
+    
+
+
 
 @code {
-    
+
     Quiz? quiz
     {
         get
         {
-            if(QuizId is null)
-               return null;
+            if (QuizId is null)
+                return null;
 
             try
             {
-                return QuizHost.Instance.Quizzes[QuizId.Value-1];
+                return QuizHost.Instance.Quizzes[QuizId.Value - 1];
             }
             catch
             {
@@ -58,32 +95,93 @@ else
     }
     Player? me;
 
+    List<(int, string, int)> playerRanks = new();
+
+    bool isQuizStarted;
+    int currentQuestionNum;
+
+    string answerResult = "";
+    bool IsQuizOver = false;
+
+    int myRank;
+    Questions? quizQuestions;
+
     List<Player?> playerList;
     List<Player?> others;
     List<string> errors = new();
 
     [SupplyParameterFromQuery]
-    public int? QuizId{get;set;}
+    public int? QuizId { get; set; }
 
     [SupplyParameterFromQuery]
     public int PlayerId { get; set; }
 
+    void CheckAnswer(int value)
+    {
+        bool isCorrect = quizQuestions.GetCorrectAnswer(currentQuestionNum) == value;
+        if (isCorrect)
+        {
+            me.Score.ChangeScore(150);
+            answerResult = "Correct! ";
+        }
+        else
+        {
+            answerResult = "Wrong! ";
+        }
+        Thread.Sleep(3000);
+        quiz.ChangeQuestion();
+    }
     protected override void OnParametersSet()
     {
         @* REQ#3.1.2 *@
-       quiz.QuizStateChanged += () =>
+        quiz.QuizStateChanged += () =>
         {
-            InvokeAsync(() => {
-                @* logger.LogInformation("quiz state changed! for {player}", me.Name); *@
-                @* REQ#3.1.3 *@
-                others = quiz.Players.Where(player => player?.PlayerId != PlayerId).ToList();
+            quizQuestions = quiz.Questions;
+            currentQuestionNum = quiz.CurrentQuestionNumber;
+            InvokeAsync(() =>
+    {
+    @* logger.LogInformation("quiz state changed! for {player}", me.Name); *@
+    @* REQ#3.1.3 *@
+    others = quiz.Players.Where(player => player?.PlayerId != PlayerId).ToList();
+    StateHasChanged();
+});
+        };
+        quiz.QuizStarted += () =>
+        {
+            InvokeAsync(() =>
+    {
+    @* REQ#3.1.3 *@
+    quizQuestions = quiz.Questions;
+    isQuizStarted = true;
+    StateHasChanged();
+});
+        };
+
+        quiz.QuestionChangedEvent += () =>
+        {
+            InvokeAsync(() =>
+            {
+                quiz.IncrementCurrentQuestionNumber();
+                currentQuestionNum++;
+                playerRanks = quiz.GetPlayerRanks();
                 StateHasChanged();
             });
+
         };
 
         quiz.QuizReset += () =>
         {
+            InvokeAsync(() =>
+            {
+            
+            IsQuizOver = true;
+            var rankList = quiz.GetPlayerRanks();
+            Leaderboard.UpdateLeaderboard(rankList);
+            myRank  = rankList.FirstOrDefault(rank => rank.playerName == me.Name).rank;
+             StateHasChanged();
+            Thread.Sleep(10000);
             NavigationManager.NavigateTo("/");
+                    });
         };
         playerList = quiz.Players;
         me = quiz.Players.FirstOrDefault(player => player?.PlayerId == PlayerId);
@@ -92,9 +190,10 @@ else
 
         errors.Clear();
     }
-    protected override void OnInitialized(){
-        
+    protected override void OnInitialized()
+    {
+
     }
 
-   
+
 }

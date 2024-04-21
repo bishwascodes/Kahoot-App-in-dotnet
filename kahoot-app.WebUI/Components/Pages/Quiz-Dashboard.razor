@@ -1,41 +1,67 @@
 @page "/quiz-dashboard"
+@using kahoot_app.WebUI.Components.Layout
+
 @inject NavigationManager NavigationManager
 
 <PageTitle>Quiz Dashboard</PageTitle>
 
 <div class="container">
-    <h1>Welcome to Quiz Management Dashboard</h1>
-    <div class="col-8">
-        <div class="mt-5 p-2 mb-6">
-            <h3>Hello @quiz.Admin.Name ! Your're Managing the quiz.</h3>
-            <h4>Your Quiz is : <em> @quiz.QuizName </em></h4>
-        </div>
+    <div class="row">
 
-        <div class="row mt-4 p-2">
-        @* REQ#3.1.3 *@
-        <h5> Current Participants: <em>(@playerList.Count)</em></h5>
-        @foreach (var player in playerList)
-        {
-            <div class="col-3 text-center">
-                <div class="card p-4"> @player.Name </div>
+    
+        <h1>Welcome to Quiz Management Dashboard</h1>
+        <div class="col-8">
+            <div class="mt-5 p-2 mb-6">
+                <h3>Hello @quiz.Admin.Name ! Your're Managing the quiz.</h3>
+                <h4>Your Quiz is : <em> @quiz.QuizName  @Leaderboard.LeaderboardPlayers.Count </em></h4>
             </div>
-        } 
-        </div>
-        @if(!quizStartedDashboard){
-            <div class="d-flex justify-content-end">
-                <div style="margin-right: 100px;">
-                    <button class="btn btn-primary mt-4" @onclick="StartQuiz">Start Quiz Now</button>
+
+            <div class="row mt-4 p-2">
+            @* REQ#3.1.3 *@
+            <h5> Current Participants: <em>(@playerList.Count)</em></h5>
+            @foreach (var player in playerList)
+            {
+                <div class="col-3 text-center">
+                    <div class="card p-4"> @player.Name </div>
                 </div>
-            
+            } 
             </div>
-        } else{
-            <b> Hello @quizQuestionList[currentQuestionNum].Item1</b>
-        }
-    </div>
-    <div class="col-4">
+            @if(!quizStartedDashboard){
+                <div class="d-flex justify-content-end">
+                    <div style="margin-right: 100px;">
+                        <button class="btn btn-primary mt-4" @onclick="StartQuiz">Start Quiz Now</button>
+                    </div>
+                
+                </div>
+            } else{
+                
+                <div class="shadow p-5 border-rounded boxed">
+                    <h4 class="text-center"> @quizQuestions.GetQuestion(currentQuestionNum) </h4>
+                    <div class="row">
+                        @foreach(var item in quizQuestions.GetOptions(currentQuestionNum)){
+
+                      
+                        <div class="col-6">
+                            <div class="inner">
+                                <button class="btn btn-primary mt-4">@item.Item2</button>
+                            </div>
+                        </div>
+                          }
+                    </div>
+                </div>
+              
+                 <button class="btn btn-primary mt-4 ml-auto" @onclick="ChangeQuizQuestion">Next Question</button>
+                
+            }
+        </div>
+    
+        <div class="col-4">
+            @if(quizStartedDashboard){
+            <LeaderboardData LeaderboardPlayers="@leaderboardPlayersList" />
+            }
+        </div>
 
     </div>
-
 
 </div>
 @code {
@@ -43,7 +69,7 @@
     [SupplyParameterFromQuery]
     public int? QuizId { get; set; }
     bool adminAdded = false;
-
+    int answer;
     bool quizStartedDashboard;
 
     string adminName;
@@ -51,8 +77,17 @@
 
     int currentQuestionNum;
 
+    void ChangeQuizQuestion(){
+        quiz.ChangeQuestion();
+        Thread.Sleep(1500);
+    }
+
+    List<(int, string, int)> leaderboardPlayersList = new();
+
     List<(string, List<(int, bool, string)>)> quizQuestionList = new();
     List<Player> playerList = new();
+
+    
 
     Quiz? quiz
     {
@@ -77,16 +112,17 @@
     void StartQuiz(){
 
         quiz.Start();
+        
 
     }
     protected override void OnInitialized()
     {
+        leaderboardPlayersList = Leaderboard.LeaderboardPlayers;
         quiz.getQuestions();
         quizQuestions = quiz.Questions;
         quizQuestionList = quizQuestions.QuestionsList;
         currentQuestionNum = quiz.CurrentQuestionNumber;
         quiz.QuizStateChanged += () => InvokeAsync(StateHasChanged);
-
 
     }
     protected override void OnParametersSet()
@@ -97,6 +133,8 @@
             {
                 @* REQ#3.1.3 *@
                 playerList = quiz.Players;
+                currentQuestionNum = quiz.CurrentQuestionNumber;
+                leaderboardPlayersList = Leaderboard.LeaderboardPlayers;
                 StateHasChanged();
             });
         };
@@ -108,6 +146,15 @@
                 quizStartedDashboard = true;
                 StateHasChanged();
             });
+        };
+         quiz.QuestionChangedEvent += () => {
+            InvokeAsync(() =>
+            {
+                currentQuestionNum++;
+                quiz.IncrementCurrentQuestionNumber();
+                StateHasChanged();
+            });
+           
         };
 
 
