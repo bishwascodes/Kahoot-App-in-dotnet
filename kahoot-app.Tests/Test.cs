@@ -227,7 +227,7 @@ public class QuestionsTests
     public void Leaderboard_Is_Upto_Date()
     {
         // Arrange
-       
+
         var playerData = new List<(string playerName, int rank, int score)>
         {
             ("Player1", 1, 100),
@@ -243,7 +243,7 @@ public class QuestionsTests
         };
         // REQ#2.3.1
         Leaderboard.UpdateLeaderboard(playerData);
-         var NewPlayerData = new List<(string playerName, int rank, int score)>
+        var NewPlayerData = new List<(string playerName, int rank, int score)>
         {
             ("Player1", 1, 101),
             ("Player2", 2, 90),
@@ -311,6 +311,59 @@ public class QuestionsTests
 
         // Assert
         Assert.Equal("What is the largest mammal?", question);
+    }
+    
+    [Fact]
+    public void GetCorrectAnswer_Returns_Correct_Answer()
+    {
+        // Arrange
+        var questions = new Questions();
+        questions.QuestionsList = new List<(string, List<(int, bool, string)>)>
+        {
+            ("What is the capital of France?", new List<(int, bool, string)>
+                {
+                    (1, false, "Berlin"),
+                    (2, false, "Madrid"),
+                    (3, true, "Paris"),
+                    (4, false, "Rome")
+                }
+            )
+        };
+
+        // Act
+        var correctAnswer = questions.GetCorrectAnswer(0); // Getting correct answer for the first question
+
+        // Assert
+        Assert.Equal(3, correctAnswer); // Correct answer is option 3
+    }
+
+    [Fact]
+    public void GetOptions_Returns_Correct_Options()
+    {
+        // Arrange
+        var questions = new Questions();
+        questions.QuestionsList = new List<(string, List<(int, bool, string)>)>
+        {
+            ("What is the capital of France?", new List<(int, bool, string)>
+                {
+                    (1, false, "Berlin"),
+                    (2, false, "Madrid"),
+                    (3, true, "Paris"),
+                    (4, false, "Rome")
+                }
+            )
+        };
+
+        // Act
+        var options = questions.GetOptions(0); // Getting options for the first question
+
+        // Assert
+        Assert.Collection(options,
+            option => Assert.Equal((1, "Berlin"), option),
+            option => Assert.Equal((2, "Madrid"), option),
+            option => Assert.Equal((3, "Paris"), option),
+            option => Assert.Equal((4, "Rome"), option)
+        );
     }
 
 }
