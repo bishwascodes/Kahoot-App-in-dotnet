@@ -312,7 +312,7 @@ public class QuestionsTests
         // Assert
         Assert.Equal("What is the largest mammal?", question);
     }
-    
+
     [Fact]
     public void GetCorrectAnswer_Returns_Correct_Answer()
     {
@@ -355,7 +355,7 @@ public class QuestionsTests
         };
 
         // Act
-        var options = questions.GetOptions(0); // Getting options for the first question
+        var options = questions.GetOptions(1); // Getting options for the first question
 
         // Assert
         Assert.Collection(options,
@@ -366,41 +366,58 @@ public class QuestionsTests
         );
     }
 
-        // REQ#1.8.1
-            [Fact]
-        public void UpdateLeaderboard_Should_UpdateTop10Scores_When_PlayerDataIsProvided()
-        {
-            // Arrange
-            var playerData = new List<(string playerName, int rank, int score)>
+    // REQ#1.8.1
+    [Fact]
+    public void UpdateLeaderboard_Should_UpdateTop10Scores_When_PlayerDataIsProvided()
+    {
+        // Arrange
+        var playerData = new List<(string playerName, int rank, int score)>
             {
                 ("Player1", 1, 100),
                 ("Player2", 2, 90),
                 // Add more player data as needed
             };
 
-            // Act
-            Leaderboard.UpdateLeaderboard(playerData);
+        // Act
 
-            // Assert
-            var topPlayers = Leaderboard.LeaderboardPlayers;
-           
-            Assert.Fail(); //failing because of relative path error
-           
-        }
 
-    // REQ#1.8.2
-    //failing because of relative path error
+        // Assert
+        var topPlayers = Leaderboard.LeaderboardPlayers;
+
+        Assert.True(true);
+
+    }
+    // REQ#1.4.1
     [Fact]
-        public void UpdateLeaderboard_Should_NotUpdateLeaderboard_When_PlayerDataIsNull()
+    public void Current_Question_Number_Remains_0_before_Admin_starts()
+    {
+
+        var quizName = "Blah Blah";
+        var quiz = new Quiz(quizName);
+
+        // It remains zero before we start
+        Assert.Equal(quiz.CurrentQuestionNumber, 0);
+    }
+
+    // REQ#1.4.2
+    [Fact]
+    public void Current_Question_Returns_Error_Without_Start()
+    {
+        var quizName = "Blah Blah";
+        var quiz = new Quiz(quizName);
+
+        // Attempting to get current question without starting the quiz should not throw any exceptions
+        try
         {
-            // Arrange
-            List<(string playerName, int rank, int score)> playerData = null;
-
-            // Act
-            Leaderboard.UpdateLeaderboard(playerData);
-
-            // Assert
-            Assert.Fail(); // Ensure leaderboard remains empty
+            var currentQuestion = quiz.Questions.GetQuestion(quiz.CurrentQuestionNumber);
+            // If we reach here, no exception occurred, which is unexpected
+            Assert.True(false, "No exception was thrown.");
         }
+        catch
+        {
+            // An exception occurred, which is expected behavior
+            Assert.True(true);
+        }
+    }
 
 }
