@@ -1,6 +1,7 @@
 namespace kahoot_app.Tests;
 
 using kahoot_app.Logic;
+using kahoot_app.Persistence;
 public class QuestionsTests
 {
     // REQ#1.1.1
@@ -219,6 +220,61 @@ public class QuestionsTests
         Assert.Equal(2, PlayerRank1); // Player 1's rank is 2
         Assert.Equal(1, PlayerRank2); // Player 2's rank is 1
         Assert.Equal(3, PlayerRank3); // Player 3's rank is 3
+    }
+
+    // REQ#1.1.0
+    [Fact]
+    public void Leaderboard_Is_Upto_Date()
+    {
+        // Arrange
+        var leaderboard = new Leaderboard();
+        var playerData = new List<(string playerName, int rank, int score)>
+        {
+            ("Player1", 1, 100),
+            ("Player2", 2, 90),
+            ("Player3", 3, 80),
+            ("Player4", 4, 70),
+            ("Player5", 5, 60),
+            ("Player6", 6, 50),
+            ("Player7", 7, 40),
+            ("Player8", 8, 30),
+            ("Player9", 9, 20),
+            ("Player10", 10, 10)
+        };
+        leaderboard.UpdateLeaderboard(playerData);
+         var NewPlayerData = new List<(string playerName, int rank, int score)>
+        {
+            ("Player1", 1, 101),
+            ("Player2", 2, 90),
+            ("Player3", 3, 80),
+            ("Player4", 4, 70),
+            ("Player5", 5, 60),
+            ("Player6", 6, 50),
+            ("Player7", 7, 40),
+            ("Player8", 8, 30),
+            ("Player9", 9, 20),
+            ("Player11", 10, 20)
+        };
+
+        // Act
+        leaderboard.UpdateLeaderboard(NewPlayerData);
+
+        // Assert
+        var expectedLeaderboard = new List<(int, string, int)>
+        {
+            (1, "Player1", 101),
+            (2, "Player2", 90),
+            (3, "Player3", 80),
+            (4, "Player4", 70),
+            (5, "Player5", 60),
+            (6, "Player6", 50),
+            (7, "Player7", 40),
+            (8, "Player8", 30),
+            (9, "Player9", 20),
+            (10, "Player11", 20)
+        };
+
+        Assert.Equal(expectedLeaderboard, Leaderboard.LeaderboardPlayers);
     }
 
 }
