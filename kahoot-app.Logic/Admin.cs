@@ -1,32 +1,16 @@
 namespace kahoot_app.Logic;
-
-public class Admin
+// REQ#2.1.2
+public class Admin : AbstractUser
 {
-    public static int adminId = 0;
-    private static List<Admin> adminInstances = new List<Admin>(); // Static list to hold all Admin instances
-    public Admin(string adminName)
-    {
-        _name = adminName;
-        adminInstances.Add(this); // Add current instance to the list upon creation
-        adminId++;
-        AdminId = adminId;
-    }
-    public int AdminId{
-        get;
-    }
-    private string _name;
-    
-    public string Name
-    {
-        get
-        {
-            return _name;
-        }
-    }
+    private static List<Admin> adminInstances = new List<Admin>();
 
-    // Static property to access the list of all Admin instances
-    public static List<Admin> AdminInstances
+    public static List<Admin> AdminInstances => adminInstances;
+
+    public new int AdminId => UserId;
+    public new string AdminName => Name;
+
+    public Admin(string name) : base(name)
     {
-        get { return adminInstances; }
+        adminInstances.Add(this);
     }
 }

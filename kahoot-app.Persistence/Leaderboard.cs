@@ -1,5 +1,12 @@
 namespace kahoot_app.Persistence;
 
+// REQ#2.2.1
+public interface ILeaderboard
+{
+    void UpdateLeaderboard(List<(string playerName, int rank, int score)> playerData);
+}
+
+
 //REQ#2.3.1
 public static class Leaderboard
 {

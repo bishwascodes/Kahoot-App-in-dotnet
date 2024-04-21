@@ -15,18 +15,10 @@ public class Questions
     public Questions(string fileName)
     {
         var quizData = new QuizData();
-        var rawData = quizData.getDataFromJson(fileName);
-        foreach (var item in rawData)
-        {
-            List<(int optionId, bool isCorrect, string option)> _options = new();
-            foreach (var option in item.options)
-            {
-                _options.Add((option.optionId, option.isCorrect, option.option));
-            }
+        QuestionsList = quizData.getDataFromJson(fileName);
 
-            QuestionsList.Add((item.question, _options));
-        }
     }
+
 
     public int GetCorrectAnswer(int questionId)
     {

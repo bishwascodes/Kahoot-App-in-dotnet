@@ -29,7 +29,7 @@
             
             </div>
         } else{
-            <b> </b>
+            <b> Hello @quizQuestionList[currentQuestionNum].Item1</b>
         }
     </div>
     <div class="col-4">
@@ -49,7 +49,9 @@
     string adminName;
     Questions? quizQuestions;
 
-    List<Questions> quizQuestionList;
+    int currentQuestionNum;
+
+    List<(string, List<(int, bool, string)>)> quizQuestionList = new();
     List<Player> playerList = new();
 
     Quiz? quiz
@@ -82,6 +84,7 @@
         quiz.getQuestions();
         quizQuestions = quiz.Questions;
         quizQuestionList = quizQuestions.QuestionsList;
+        currentQuestionNum = quiz.CurrentQuestionNumber;
         quiz.QuizStateChanged += () => InvokeAsync(StateHasChanged);
 
 

@@ -1,27 +1,14 @@
 namespace kahoot_app.Logic;
-
-public class Player
+// REQ#2.1.2
+public class Player : AbstractUser
 {
-    private static int playerId = 0;
-    public Score? Score;
-    public Player(string name)
+    public Score? Score { get; set; }
+
+    public new int PlayerId => UserId;
+    public new string PlayerName => Name;
+
+    public Player(string name) : base(name)
     {
-        _name = name;
-        playerId++;
-        PlayerId = playerId;
-        Score = new Score(Name);
+        Score = new Score(name);
     }
-    
-    public int PlayerId{
-        get;
-    }
-    private string _name;
-
-    public string Name{
-        get{
-            return _name;
-        }
-    }
-    
-
 }
