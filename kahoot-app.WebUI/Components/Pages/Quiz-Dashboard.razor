@@ -3,11 +3,27 @@
 
 <PageTitle>Quiz Dashboard</PageTitle>
 
+<h1>Welcome to Quiz Management Dashboard</h1>
+<div class="mt-5 p-2 mb-6">
+    <h3>Hello @quiz.Admin.Name ! Your're Managing the quiz.</h3>
+    <h4>Your Quiz is : <em> @quiz.QuizName </em></h4>
+</div>
 
-<h1>Hello @quiz.Admin.Name ! Your're Managing the quiz.</h1>
-<h2>Your Quiz is : <em> @quiz.QuizName (@quizQuestions.QuestionsList.Count) </em></h2>
-
-
+<div class="row mt-4 p-2">
+<h5> Current Participants: <em>(@playerList.Count)</em></h5>
+   @foreach (var player in playerList)
+{
+    <div class="col-3 text-center">
+         <div class="card p-4"> @player.Name </div>
+    </div>
+} 
+</div>
+<div class="d-flex justify-content-end">
+    <div style="margin-right: 100px;">
+         <button class="btn btn-primary mt-4" @onclick="StartQuiz">Start Quiz Now</button>
+    </div>
+   
+</div>
 @code {
 
     [SupplyParameterFromQuery]
@@ -16,7 +32,8 @@
 
     string adminName;
     Questions? quizQuestions;
-    
+    List<Player> playerList = new();
+
     Quiz? quiz
     {
         get
@@ -26,7 +43,7 @@
 
             try
             {
-                return QuizHost.Instance.Quizzes[QuizId.Value-1];
+                return QuizHost.Instance.Quizzes[QuizId.Value - 1];
             }
             catch
             {
@@ -36,13 +53,31 @@
         }
 
     }
+
+    void StartQuiz(){
+        quiz.Start();
+    }
     protected override void OnInitialized()
     {
         quiz.getQuestions();
         quizQuestions = quiz.Questions;
+
         quiz.QuizStateChanged += () => InvokeAsync(StateHasChanged);
-       
+
 
     }
-   
+    protected override void OnParametersSet()
+    {
+        quiz.QuizStateChanged += () =>
+        {
+            InvokeAsync(() =>
+            {
+                playerList = quiz.Players;
+                StateHasChanged();
+            });
+        };
+
+
+    }
+
 }

@@ -227,7 +227,7 @@ public class QuestionsTests
     public void Leaderboard_Is_Upto_Date()
     {
         // Arrange
-        var leaderboard = new Leaderboard();
+       
         var playerData = new List<(string playerName, int rank, int score)>
         {
             ("Player1", 1, 100),
@@ -241,7 +241,7 @@ public class QuestionsTests
             ("Player9", 9, 20),
             ("Player10", 10, 10)
         };
-        leaderboard.UpdateLeaderboard(playerData);
+        Leaderboard.UpdateLeaderboard(playerData);
          var NewPlayerData = new List<(string playerName, int rank, int score)>
         {
             ("Player1", 1, 101),
@@ -257,7 +257,7 @@ public class QuestionsTests
         };
 
         // Act
-        leaderboard.UpdateLeaderboard(NewPlayerData);
+        Leaderboard.UpdateLeaderboard(NewPlayerData);
 
         // Assert
         var expectedLeaderboard = new List<(int, string, int)>

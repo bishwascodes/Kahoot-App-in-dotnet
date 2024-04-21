@@ -1,13 +1,11 @@
 namespace kahoot_app.Persistence;
 
-public class Leaderboard
+public static class Leaderboard
 {
-    public string Name { get; set; }
-    public int Rank { get; set; }
-    public int Score { get; set; }
+
     public static List<(int, string, int)> LeaderboardPlayers = new();
 
-    public void UpdateLeaderboard(List<(string playerName, int rank, int score)> playerData)
+    public static void UpdateLeaderboard(List<(string playerName, int rank, int score)> playerData)
     {
         // Initialize LeaderboardPlayers if it's empty
         if (LeaderboardPlayers == null)
