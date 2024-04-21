@@ -420,4 +420,41 @@ public class QuestionsTests
         }
     }
 
+    // REQ#1.3.1
+    [Fact]
+    public void Quiz_Reset_Event_Is_Triggered_At_End_Of_Question_List()
+    {
+        // Arrange
+        var quizName = "Sample Quiz";
+        var quiz = new Quiz(quizName);
+        quiz.Questions = new();
+        bool eventTriggered = false;
+
+        // Act
+        quiz.QuizReset += () => eventTriggered = true;
+        quiz.IncrementCurrentQuestionNumber();
+        quiz.IncrementCurrentQuestionNumber();
+
+        // Assert
+        Assert.True(eventTriggered);
+    }
+
+    // REQ#1.3.2
+    [Fact]
+    public void Quiz_Reset_Event_Is_Not_Triggered_If_End_Of_Question_List_Not_Reached()
+    {
+        // Arrange
+        var quizName = "Sample Quiz";
+        var quiz = new Quiz(quizName);
+        quiz.Questions = new();
+        bool eventTriggered = false;
+
+        // Act
+        quiz.QuizReset += () => eventTriggered = true;
+        quiz.IncrementCurrentQuestionNumber(); // Simulate progress only once
+
+        // Assert
+        Assert.False(eventTriggered);
+    }
+
 }
