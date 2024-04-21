@@ -71,13 +71,24 @@ public class Quiz
     public void EndQuiz()
     {
         IsQuizOver = true;
+        // REQ#3.1.2
         QuizReset?.Invoke();
+    }
+    public void ChangeQuestion(){
+       
+        QuestionChangedEvent?.Invoke();
+    }
+    public void TriggerStateChange(){
+         QuizStateChanged?.Invoke();
     }
     public void IncrementCurrentQuestionNumber()
     {
+        if(currentQuestionNumber > Questions.QuestionsList.Count){
+            QuizReset?.Invoke();
+        }
         currentQuestionNumber++;
     }
-    public List<(string playerName, int rank, int score)> GetPlayerRanks()
+    public List<( int rank, string playerName, int score)> GetPlayerRanks()
     {
         // Sort players by score value in descending order
         var sortedPlayers = Players
@@ -87,7 +98,7 @@ public class Quiz
 
         // Assign ranks to players based on their position in the sorted list
         var rankedPlayers = sortedPlayers
-            .Select((player, index) => (player!.Name, Rank: index + 1, Score: player.Score!.Value)) // Assign rank based on position in the sorted list
+            .Select((player, index) => (Rank: index + 1, player!.Name, Score: player.Score!.Value)) // Assign rank based on position in the sorted list
             .ToList();
 
         return rankedPlayers;
@@ -97,6 +108,7 @@ public class Quiz
     public event Action? QuizStateChanged;
     public event Action? QuizReset;
     public event Action? QuizStarted;
+    public event Action? QuestionChangedEvent;
 }
 
 [Serializable]

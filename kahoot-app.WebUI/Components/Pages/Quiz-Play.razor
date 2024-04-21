@@ -176,8 +176,10 @@ else if (!IsQuizOver)
             
             IsQuizOver = true;
             var rankList = quiz.GetPlayerRanks();
+            //REQ#4.1.1
             Leaderboard.UpdateLeaderboard(rankList);
             myRank  = rankList.FirstOrDefault(rank => rank.playerName == me.Name).rank;
+            //REQ#3.1.3
              StateHasChanged();
             Thread.Sleep(10000);
             NavigationManager.NavigateTo("/");

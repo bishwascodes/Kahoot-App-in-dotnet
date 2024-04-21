@@ -3,7 +3,17 @@ using kahoot_app.Persistence;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace kahoot_app.Logic;
-public class Questions
+
+// REQ#2.2.1
+public interface IQuestions
+{
+    int GetCorrectAnswer(int questionId);
+    string GetQuestion(int questionId);
+    List<(int, string)> GetOptions(int questionId);
+}
+
+// REQ#2.2.1
+public class Questions : IQuestions
 {
     public List<(string question, List<(int optionId, bool isCorrect, string option)> options)> QuestionsList = new();
 
