@@ -13,7 +13,7 @@ else if (!IsQuizOver)
     if (!isQuizStarted)
     {
 
-
+        @* REQ#1.7.3 *@
         <h1> You're in the Lobby of the quiz "@quiz.QuizName"</h1>
         <h3> @me.Name, are you excited? The quiz will start shortly.</h3>
 
@@ -66,7 +66,7 @@ else if (!IsQuizOver)
 
 } else{
     <h3>Quiz Over</h3>
-
+@* REQ#1.3.3 *@
     <h1> Your Rank is @myRank out of @playerList.Count </h1>
 }
     
@@ -116,6 +116,7 @@ else if (!IsQuizOver)
     [SupplyParameterFromQuery]
     public int PlayerId { get; set; }
 
+@* REQ#1.5.3 *@
     void CheckAnswer(int value)
     {
         bool isCorrect = quizQuestions.GetCorrectAnswer(currentQuestionNum) == value;

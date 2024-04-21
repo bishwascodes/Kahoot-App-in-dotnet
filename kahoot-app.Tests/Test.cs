@@ -366,4 +366,41 @@ public class QuestionsTests
         );
     }
 
+        // REQ#1.8.1
+            [Fact]
+        public void UpdateLeaderboard_Should_UpdateTop10Scores_When_PlayerDataIsProvided()
+        {
+            // Arrange
+            var playerData = new List<(string playerName, int rank, int score)>
+            {
+                ("Player1", 1, 100),
+                ("Player2", 2, 90),
+                // Add more player data as needed
+            };
+
+            // Act
+            Leaderboard.UpdateLeaderboard(playerData);
+
+            // Assert
+            var topPlayers = Leaderboard.LeaderboardPlayers;
+           
+            Assert.Fail(); //failing because of relative path error
+           
+        }
+
+    // REQ#1.8.2
+    //failing because of relative path error
+    [Fact]
+        public void UpdateLeaderboard_Should_NotUpdateLeaderboard_When_PlayerDataIsNull()
+        {
+            // Arrange
+            List<(string playerName, int rank, int score)> playerData = null;
+
+            // Act
+            Leaderboard.UpdateLeaderboard(playerData);
+
+            // Assert
+            Assert.Fail(); // Ensure leaderboard remains empty
+        }
+
 }
