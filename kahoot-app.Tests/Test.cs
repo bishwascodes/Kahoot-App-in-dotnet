@@ -1,5 +1,6 @@
 namespace kahoot_app.Tests;
 
+using System.Configuration.Assemblies;
 using kahoot_app.Logic;
 using kahoot_app.Persistence;
 public class QuestionsTests
@@ -592,6 +593,33 @@ public class QuestionsTests
 
         // Assert
         Assert.Equal(0, me.Score.Value); // Score should be 0
+    }
+
+    // REQ#1.7.1
+    [Fact]
+    public void me_returns_my_own_object(){
+         // Arrange
+        var quizName = "Sample Quiz";
+        var quiz = new Quiz(quizName);
+        quiz.PlayersCanJoin = true;
+        int playerId = quiz.Join("John");
+        Player me = quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId);
+
+        Assert.Equal("John", me.PlayerName) ;
+    }
+
+    // REQ#1.7.2
+    [Fact]
+    public void me_returns_last_user_object_if_two_players_join(){
+         // Arrange
+        var quizName = "Sample Quiz";
+        var quiz = new Quiz(quizName);
+        quiz.PlayersCanJoin = true;
+        int playerId = quiz.Join("John");
+        playerId = quiz.Join("Paul");
+        Player me = quiz.Players.FirstOrDefault(player => player?.PlayerId == playerId);
+
+        Assert.Equal("Paul", me.PlayerName) ;
     }
 
 }

@@ -43,7 +43,7 @@
                       
                         <div class="col-6">
                             <div class="inner">
-                                <button class="btn btn-primary mt-4">@item.Item2</button>
+                                @item.Item2
                             </div>
                         </div>
                           }
@@ -79,7 +79,6 @@
 
     void ChangeQuizQuestion(){
         quiz.ChangeQuestion();
-        Thread.Sleep(1500);
     }
 
     List<(int, string, int)> leaderboardPlayersList = new();
@@ -151,8 +150,8 @@
          quiz.QuestionChangedEvent += () => {
             InvokeAsync(() =>
             {
-                currentQuestionNum++;
                 quiz.IncrementCurrentQuestionNumber();
+                currentQuestionNum = quiz.CurrentQuestionNumber;
                 StateHasChanged();
             });
            

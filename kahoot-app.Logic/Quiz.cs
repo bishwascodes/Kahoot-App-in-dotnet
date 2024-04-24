@@ -75,7 +75,6 @@ public class Quiz
         QuizReset?.Invoke();
     }
     public void ChangeQuestion(){
-       
         QuestionChangedEvent?.Invoke();
     }
     public void TriggerStateChange(){

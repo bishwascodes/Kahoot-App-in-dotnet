@@ -131,6 +131,7 @@ else if (!IsQuizOver)
             answerResult = "Wrong! ";
         }
         Thread.Sleep(3000);
+        answerResult = " ";
         quiz.ChangeQuestion();
     }
     protected override void OnParametersSet()
