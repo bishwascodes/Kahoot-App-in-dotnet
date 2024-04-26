@@ -75,6 +75,7 @@ public class Quiz
         QuizReset?.Invoke();
     }
     public void ChangeQuestion(){
+        IncrementCurrentQuestionNumber();
         QuestionChangedEvent?.Invoke();
     }
     public void TriggerStateChange(){
@@ -82,10 +83,11 @@ public class Quiz
     }
     public void IncrementCurrentQuestionNumber()
     {
-        if(currentQuestionNumber > Questions.QuestionsList.Count){
+        if(currentQuestionNumber >= Questions.QuestionsList.Count){
             QuizReset?.Invoke();
-        }
+        } else{
         currentQuestionNumber++;
+        }
     }
     public List<( int rank, string playerName, int score)> GetPlayerRanks()
     {
