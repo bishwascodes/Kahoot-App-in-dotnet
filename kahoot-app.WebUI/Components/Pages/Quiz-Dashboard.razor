@@ -13,6 +13,9 @@
     body{
         font-family: "Poppins", sans-serif;
     }
+    .shadow-1 {
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    }
 </style>
 @if(!IsQuizOver){
 <div>
@@ -32,7 +35,7 @@
             @foreach (var player in playerList)
             {
                 <div class="col-3 text-center">
-                    <div class="card p-4"> @player.Name </div>
+                    <div class="shadow-1 p-4"> @player.Name </div>
                 </div>
             } 
             </div>
