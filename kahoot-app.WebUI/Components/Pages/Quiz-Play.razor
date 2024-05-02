@@ -15,7 +15,7 @@ else if (!IsQuizOver)
 
         @* REQ#1.7.3 *@
         <h1> You're in the Lobby of the quiz "@quiz.QuizName"</h1>
-        <h3> @me.Name, are you excited? The quiz will start shortly.</h3>
+        <h3> @me.Name, are you excited? The quiz will start shortly once the admin starts.</h3>
 
         <div class="row">
             <div class="col-12 mt-5">
@@ -38,6 +38,7 @@ else if (!IsQuizOver)
     else
     {
         <div class="container">
+            <h3 class="text-center mb-4">Hello @me.Name! Enjoy the game.</h3>
             <div class="row">
                 <div class="col-8">
                     <div class="shadow p-5 border-rounded boxed">
@@ -54,6 +55,7 @@ else if (!IsQuizOver)
                             }
                         </div>
                         <h4 class="text-center"> @answerResult </h4>
+                        <h5 class="text-center mt-5">Your Current Score: @me.Score.Value</h5>
                     </div>
                 </div>
                 <div class="col-4">

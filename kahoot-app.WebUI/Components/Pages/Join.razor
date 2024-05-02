@@ -12,7 +12,7 @@
 else if (quiz.PlayersCanJoin)
 {
     <form @onsubmit=joinQuiz>
-        <input @bind=newPlayerName placeholder="Your Name" />
+        <input required @bind=newPlayerName placeholder="Your Name" />
         <input type=submit value='Join Quiz' />
     </form>
 }
