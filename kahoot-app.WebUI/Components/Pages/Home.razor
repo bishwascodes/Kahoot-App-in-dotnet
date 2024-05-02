@@ -62,18 +62,6 @@
     }
 </style>
 
-@if (openQuizzes.Any())
-{
-    <h1>Join available Quizzes (@openQuizzes.Count)</h1>
-    @foreach (var item in openQuizzes)
-    {
-        <button @onclick=@(() => joinQuiz(item.Id)) class="btn btn-primary m-3">
-            Join @item.Quiz.QuizName
-        </button>
-
-    }
-    <hr>
-}
 
 <div class="row align-items-center">
     <div class="col-md-7 hero-left">
